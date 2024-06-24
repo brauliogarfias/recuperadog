@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Bootstrap y otros enlaces -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <!-- Estilos actualizados -->
+  <style>
+    body {
+      font: 20px Montserrat, sans-serif;
+      line-height: 1.8;
+      color: #f5f6f7;
+      background-color: #52B2F9; /* Nuevo color de fondo */
+    }
+    p {font-size: 18px;}
+    .margin {margin-bottom: 45px;}
+    .bg-1 { 
+      background-color: #52B2F9; /* Blue */
+      color: #ffffff;
+      border: 4px solid #2844a2;
+    }
+
+    .bg-2 { 
+      background-color: #474e5d; /* Dark Blue */
+      color: #ffffff;
+    }
+
+    .bg-3 { 
+      background-color: #ffffff; /* White */
+      color: #555555;
+    }
+
+    .bg-32 { 
+      background-color: #ffffff; /* White */
+      color: #555555;
+      border: 4px solid #3d3b3b;
+    }
+
+    .bg-4 { 
+      background-color: #2f2f2f; /* Black Gray */
+      color: #fff;
+    }
+
+    .container-fluid {
+      padding-top: 70px;
+      padding-bottom: 70px;
+    }
+
+    .navbar {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      border: 0;
+      border-radius: 0;
+      margin-bottom: 0;
+      font-size: 12px;
+      letter-spacing: 5px;
+    }
+
+    .navbar-nav  li a:hover {
+      color: #1abc9c !important;
+    }
+
+    .login-container {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .login-box {   /* recuadro de registro */
+      background-color: #ffffff;
+      border: 2px solid #2e5f85;
+      padding: 56px; 
+      width: 500px; 
+      margin: 0 auto; 
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .login-box button {
+      background-color: #52B2F9;
+      color: #ffffff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      margin-bottom: 17px;
+    }
+
+    .login-box a {
+      color: #555555;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .login-box h2 {
+      color: #333;
+      margin-bottom: 25px; 
+    }
+
+    .notification-box {  /* recuadro de notificacion */
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      border: 2px solid #52B2F9;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+    .form-container { /* espacio entre el cuestionario y el footer */
+    margin-bottom: 40px;
+  }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">CatDog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{url_for('agregar_mascota')}}">Agregar animal</a></li>
+        <li><a href="{{url_for('galeria')}}">Busqueda de animales</a></li>
+        <li><a href="{{url_for('inicio_sesion')}}">Iniciar sesión</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- contenedor de inicio de seson  -->
+<div class="container form-container">
+  <div class="login-container">
+    <div class="login-box">
+      <h2>Iniciar Sesión</h2>
+      <form>
+        <input type="email" placeholder="Correo electrónico" required>
+        <input type="password" placeholder="Contraseña" required>
+        <button type="submit">Iniciar Sesion</button>
+      </form>
+      <div>
+        <a href="#" onclick="showNotification()">¿No recuerdas tu contraseña?</a>
+        <a href="#" onclick="showNotification()">¿No tienes cuenta? Regístrate</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- recuadro de la notificacion -->
+  <div id="notification-box" class="notification-box" style="width: 700px; height: 600px;">
+    <span class="close-btn" onclick="hideNotification()" style="color: #333;">✖</span>
+    <h3 style="color: #333;">Registro de Usuario</h3>
+    <form>
+      <label for="username" style="color: #333;">Usuario:</label>
+      <input type="text" id="username" name="username" required>
+      <br>
+      <label for="password" style="color: #333;">Contraseña:</label>
+      <input type="password" id="password" name="password" required>
+      <br>
+      <button type="submit" style="background-color: #52B2F9; color: #fff; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">Registrarse</button>
+    </form>
+  </div>
+
+<!-- no tocar, funcion para notis-->
+<script>
+
+  function showNotification() {
+    var notificationBox = document.getElementById("notification-box");
+    notificationBox.style.display = "block";
+  }
+
+  function hideNotification() {
+    var notificationBox = document.getElementById("notification-box");
+    notificationBox.style.display = "none";
+  }
+</script>
+
+
+<footer class="container-fluid bg-4 text-center">
+    <p>®Derechos Reservados 2024 | Recuperadog y Rescate</p> 
+</footer>
+</body>
+</html>
